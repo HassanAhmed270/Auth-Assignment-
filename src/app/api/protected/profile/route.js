@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import supabase from "../../../../../lib/supabase";
+import supabase from "@/app/lib/supabase";
+import { verifyToken } from "@/middleware/verify";
 //STAGE 3 Done this Verification of token in Stage 2 
 export async function GET(request) {
     const authentication = await request.headers.get("authorization");
@@ -12,28 +13,18 @@ export async function GET(request) {
             { status: 401 }
         );
     }
-
     const token = authentication.split(" ")[1];
-    const {
-        data: { user },
-        error,
-    } = await supabase.auth.getUser(token);
-
-    if (error || !user) {
-        return NextResponse.json(
-            {
-                success: false,
-                error: error?.message || "Unauthorized",
-            },
-            { status: 401 }
-        );
-    }
+    const user = await verifyToken(token);
 
     return NextResponse.json(
         {
             success: true,
-            user,
+            id: user.id,
+            email: user.email,
+            created_at: user.created_at,
         },
-        { status: 200 }
+        {
+            status: 200,
+        }
     );
 }
