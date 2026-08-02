@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import supabase from "../../../../../lib/supabase";
-
+//STAGE 3 Done this Verification of token in Stage 2 
 export async function GET(request) {
     const authentication = await request.headers.get("authorization");
     if (!authentication?.startsWith("Bearer ")) {
