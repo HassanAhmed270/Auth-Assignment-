@@ -1,5 +1,5 @@
 import Image from "next/image";
-import supabase from "../../lib/supabase";
+import supabase from "@/app/lib/supabase";
 
 export default async function Home() {
   const { data, error } = await supabase.auth.getSession();
